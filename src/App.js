@@ -1,25 +1,23 @@
+import { useState } from "react";
 import LocalClock from "./components/local-clock";
-import useClock from "./hooks/useClock";
 
+const LOCAL_CLOCK_INTI = {
+  title: "My Clock",
+  timezone: "",
+  offset: 0,
+  date: null,
+};
 function App() {
-  const {clock:local} = useClock('Local Clock');
-  const {clock:pst} = useClock('PST clock', 'PST');
-  const {clock:est} = useClock('EST clock', 'EST');
-  const {clock:pak} = useClock('UTC clock', 'UTC', 5*60);
-  const {clock:british} = useClock('UTC clock', 'BST');
-  const {clock:europian} = useClock('UTC clock', 'EET');
+  const [localClock, setLocalClock] = useState({ ...LOCAL_CLOCK_INTI });
 
-  console.log(local.date?.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
-  console.log(pst.date?.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
-  console.log(est.date?.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
-  console.log(pak.date?.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
-  console.log(british.date?.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
-  console.log(europian.date?.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
-  return (
-    <div className="App">
-      <LocalClock />
-    </div>
-  );
+  const updateLocalClock = (data) =>{
+    setLocalClock({
+      ...localClock,
+      ...data
+    })
+  }
+
+  return <div>{<LocalClock clock={localClock} updateClock={updateLocalClock} />}</div>;
 }
 
 export default App;
